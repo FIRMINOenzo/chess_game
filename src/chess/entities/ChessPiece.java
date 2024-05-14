@@ -25,5 +25,14 @@ public class ChessPiece extends Piece {
     public void increaseMoveCount() {
         this.moveCount += 1;
     }
+
+    @Override
+    public String toString() {
+        return this
+                .getClass()
+                .getSimpleName()
+                .substring(0, 1)
+                .toUpperCase();
+    }
 }
 
