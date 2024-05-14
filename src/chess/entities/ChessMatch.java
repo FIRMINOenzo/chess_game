@@ -1,7 +1,10 @@
 package chess.entities;
 
 import board.entities.Board;
+import board.entities.Position;
 import chess.enums.Color;
+import chess.pieces.King;
+import chess.pieces.Rook;
 
 public class ChessMatch {
     private Integer turn;
@@ -16,6 +19,11 @@ public class ChessMatch {
         this.check = false;
         this.checkMate = false;
         this.board = new Board(8, 8);
+
+        this.initialSetup();
+    }
+
+    private void initialSetup() {
     }
 
     public ChessPiece[][] getPieces() {
