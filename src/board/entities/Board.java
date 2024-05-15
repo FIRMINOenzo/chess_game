@@ -34,9 +34,9 @@ public class Board {
     }
 
     public Boolean positionExists(Integer row, Integer column) {
-        return (0 < row && row < this.rows)
+        return (0 <= row && row < this.rows)
                 &&
-                (0 < column && column < this.columns);
+                (0 <= column && column < this.columns);
     }
 
     public Boolean positionExists(Position position) {
