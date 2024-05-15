@@ -4,7 +4,7 @@ import board.entities.Board;
 import board.entities.Piece;
 import chess.enums.Color;
 
-public class ChessPiece extends Piece {
+public abstract class ChessPiece extends Piece {
     private final Color color;
     private Integer moveCount;
 
