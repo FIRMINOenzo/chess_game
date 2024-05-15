@@ -1,9 +1,39 @@
 package UI;
 
 import UI.enums.AnsiColor;
+import UI.exceptions.UIException;
 import chess.entities.ChessPiece;
+import chess.entities.ChessPosition;
+
+import java.util.Scanner;
 
 public class UI {
+    public static ChessPosition readChessPosition(Scanner scanner) {
+        String userInput = scanner.nextLine().trim().toLowerCase();
+
+        if (userInput.length() != 2) {
+            throw new UIException("[Input error]: Input length must be 2.");
+        }
+
+        char column = userInput.charAt(0);
+        if (column < 'a' || column > 'h') {
+            throw new UIException("[Input error]: First character must be a letter from a to h.");
+        }
+
+        int row;
+        try {
+            row = Integer.parseInt(userInput.substring(1, 2));
+        } catch (NumberFormatException e) {
+            throw new UIException("[Input error]: Second character must be a number from 1 to 8.");
+        }
+
+        if (row < 1 || row > 8) {
+            throw new UIException("[Input error]: Second character must be a number from 1 to 8.");
+        }
+
+        return new ChessPosition(row, column);
+    }
+
     public static void printChessBoard(ChessPiece[][] chessBoard) {
         System.out.println("  a b c d e f g h");
         for (int i = 0; i < chessBoard.length; i++) {
