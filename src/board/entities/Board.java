@@ -19,7 +19,7 @@ public class Board {
 
     public Piece piece(Integer row, Integer column) {
         if (!this.positionExists(row, column)) {
-            throw new BoardException("[Position error]: Position (" + row + ", " + column +  ") does not exists.");
+            throw new BoardException("[Position error]: Position (" + row + ", " + column + ") does not exists.");
         }
 
         return this.pieces[row][column];
@@ -33,6 +33,19 @@ public class Board {
         return this.pieces[position.getRow()][position.getColumn()];
     }
 
+    public Piece removePiece(Position position) {
+        if (!this.thereIsAPiece(position)) {
+            return null;
+        }
+
+        Piece auxiliaryPiece = this.piece(position);
+        auxiliaryPiece.position = null;
+
+        this.pieces[position.getRow()][position.getColumn()] = null;
+
+        return auxiliaryPiece;
+    }
+
     public Boolean positionExists(Integer row, Integer column) {
         return (0 <= row && row < this.rows)
                 &&
@@ -43,7 +56,7 @@ public class Board {
         return this.positionExists(position.getRow(), position.getColumn());
     }
 
-    public Boolean hasAPiece(Position position) {
+    public Boolean thereIsAPiece(Position position) {
         if (!this.positionExists(position)) {
             throw new BoardException("[Position error]: Position (" + position + ") does not exists.");
         }
@@ -52,7 +65,7 @@ public class Board {
     }
 
     public void placePiece(Piece piece, Position position) {
-        if (this.hasAPiece(position)) {
+        if (this.thereIsAPiece(position)) {
             throw new BoardException("[Position error]: Position (" + position + ") already filled.");
         }
 

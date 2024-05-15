@@ -1,7 +1,10 @@
 package chess.entities;
 
 import board.entities.Board;
+import board.entities.Piece;
+import board.entities.Position;
 import chess.enums.Color;
+import chess.exceptions.ChessException;
 import chess.pieces.King;
 import chess.pieces.Rook;
 
@@ -54,5 +57,31 @@ public class ChessMatch {
         }
 
         return chessBoard;
+    }
+
+    public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
+        Position source = sourcePosition.toPosition();
+        Position target = targetPosition.toPosition();
+
+        validateSourcePosition(source);
+
+        Piece capturedPiece = performMove(source, target);
+
+        return (ChessPiece) capturedPiece;
+    }
+
+    private Piece performMove(Position source, Position target) {
+        Piece sourcePiece = this.board.removePiece(source);
+        Piece targetPiece = this.board.removePiece(target);
+
+        this.board.placePiece(sourcePiece, target);
+
+        return targetPiece;
+    }
+
+    private void validateSourcePosition(Position position) {
+        if (!this.board.thereIsAPiece(position)) {
+            throw new ChessException("[Chess Position error]: There is no piece at informed position.");
+        }
     }
 }
