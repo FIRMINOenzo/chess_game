@@ -16,7 +16,7 @@ public class ChessMatch {
     private final Board board;
 
     public ChessMatch() {
-        this.turn = 0;
+        this.turn = 1;
         this.currentPlayer = Color.WHITE;
         this.check = false;
         this.checkMate = false;
@@ -68,6 +68,8 @@ public class ChessMatch {
 
         Piece capturedPiece = this.performMove(source, target);
 
+        this.nextTurn();
+
         return (ChessPiece) capturedPiece;
     }
 
@@ -91,6 +93,10 @@ public class ChessMatch {
             throw new ChessException("[Chess Position error]: There is no piece at informed position.");
         }
 
+        if (this.currentPlayer != ((ChessPiece) this.board.piece(position)).getColor()) {
+            throw new ChessException("[Chess Position error]: Chosen piece is not yours.");
+        }
+
         if (!this.board.piece(position).isThereAnyPossibleMove()) {
             throw new ChessException("[Chess Position error]: There is no possible move for this piece.");
         }
@@ -100,5 +106,18 @@ public class ChessMatch {
         if (!this.board.piece(source).possibleMove(target)) {
             throw new ChessException("[Chess Position error]: Chosen piece cannot move to target position.");
         }
+    }
+
+    private void nextTurn() {
+        this.turn += 1;
+        this.currentPlayer = this.currentPlayer == Color.WHITE ? Color.BLACK : Color.WHITE;
+    }
+
+    public Integer getTurn() {
+        return this.turn;
+    }
+
+    public Color getCurrentPlayer() {
+        return this.currentPlayer;
     }
 }

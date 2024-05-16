@@ -3,6 +3,7 @@ package UI;
 import UI.enums.AnsiBackgroundColor;
 import UI.enums.AnsiColor;
 import UI.exceptions.UIException;
+import chess.entities.ChessMatch;
 import chess.entities.ChessPiece;
 import chess.entities.ChessPosition;
 
@@ -38,6 +39,13 @@ public class UI {
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+
+    public static void printMatch(ChessMatch chessMatch) {
+        UI.printChessBoard(chessMatch.getPieces());
+        System.out.println();
+        System.out.println("Turn: " + chessMatch.getTurn());
+        System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
     }
     
     public static void printChessBoard(ChessPiece[][] chessBoard) {
