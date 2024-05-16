@@ -35,7 +35,7 @@ public class Main {
                 System.out.print("\nTarget position: ");
                 ChessPosition targetPosition = UI.readChessPosition(scanner);
 
-                ChessPiece capturedPiece = chessMatch.performChessMove(sourcePosition, targetPosition);
+                chessMatch.performChessMove(sourcePosition, targetPosition);
             } catch (ChessException | UIException exception) {
                 System.out.println(exception.getMessage());
                 scanner.nextLine();

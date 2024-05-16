@@ -4,8 +4,8 @@ import board.entities.Position;
 import chess.exceptions.ChessException;
 
 public class ChessPosition {
-    private Integer row;
-    private Character column;
+    private final Integer row;
+    private final Character column;
 
     public ChessPosition(Integer row, Character column) {
         if ((column < 'a' || column > 'h') || (row < 1 || row > 8)) {
@@ -21,7 +21,7 @@ public class ChessPosition {
     }
 
     protected static ChessPosition fromPosition(Position position) {
-        return new ChessPosition(8 - position.getRow(), (char) ('a' - position.getColumn()));
+        return new ChessPosition(8 - position.getRow(), (char) ('a' + position.getColumn()));
     }
 
     public Integer getRow() {
