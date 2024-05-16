@@ -8,11 +8,16 @@ import chess.exceptions.ChessException;
 import chess.pieces.King;
 import chess.pieces.Rook;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class ChessMatch {
     private Integer turn;
     private Color currentPlayer;
     private Boolean check;
     private Boolean checkMate;
+    private final ArrayList<ChessPiece> piecesOnTheBoard = new ArrayList<>();
+    private final ArrayList<ChessPiece> capturedPieces = new ArrayList<>();
     private final Board board;
 
     public ChessMatch() {
@@ -42,6 +47,7 @@ public class ChessMatch {
 
     private void placeNewPiece(Character column, Integer row, ChessPiece piece) {
         this.board.placePiece(piece, new ChessPosition(row, column).toPosition());
+        this.piecesOnTheBoard.add(piece);
     }
 
     public ChessPiece[][] getPieces() {
@@ -66,11 +72,16 @@ public class ChessMatch {
         this.validateSourcePosition(source);
         this.validateTargetPosition(source, target);
 
-        Piece capturedPiece = this.performMove(source, target);
+        ChessPiece capturedPiece = (ChessPiece) this.performMove(source, target);
 
         this.nextTurn();
 
-        return (ChessPiece) capturedPiece;
+        if (capturedPiece != null) {
+            this.piecesOnTheBoard.remove(capturedPiece);
+            this.capturedPieces.add(capturedPiece);
+        }
+
+        return capturedPiece;
     }
 
     public boolean[][] possibleMoves(ChessPosition chessPosition) {
@@ -119,5 +130,9 @@ public class ChessMatch {
 
     public Color getCurrentPlayer() {
         return this.currentPlayer;
+    }
+
+    public ArrayList<ChessPiece> getCapturedPieces() {
+        return this.capturedPieces;
     }
 }

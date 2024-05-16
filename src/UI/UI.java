@@ -6,7 +6,9 @@ import UI.exceptions.UIException;
 import chess.entities.ChessMatch;
 import chess.entities.ChessPiece;
 import chess.entities.ChessPosition;
+import chess.enums.Color;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UI {
@@ -44,10 +46,12 @@ public class UI {
     public static void printMatch(ChessMatch chessMatch) {
         UI.printChessBoard(chessMatch.getPieces());
         System.out.println();
+        UI.printCapturedPieces(chessMatch.getCapturedPieces());
+        System.out.println();
         System.out.println("Turn: " + chessMatch.getTurn());
         System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
     }
-    
+
     public static void printChessBoard(ChessPiece[][] chessBoard) {
         System.out.println("  a b c d e f g h");
         for (int i = 0; i < chessBoard.length; i++) {
@@ -108,6 +112,24 @@ public class UI {
         }
 
         System.out.print(" ");
+    }
+
+    private static void printCapturedPieces(ArrayList<ChessPiece> capturedPieces) {
+        ArrayList<ChessPiece> whiteCapturedPieces = new ArrayList<>();
+        ArrayList<ChessPiece> blackCapturedPieces = new ArrayList<>();
+
+        for (ChessPiece piece : capturedPieces) {
+            if (piece.getColor() == Color.WHITE) {
+                whiteCapturedPieces.add(piece);
+                continue;
+            }
+
+            blackCapturedPieces.add(piece);
+        }
+
+        System.out.println("Captured pieces:");
+        System.out.println(AnsiColor.ANSI_WHITE.code() + "White: " + whiteCapturedPieces + AnsiColor.ANSI_RESET.code());
+        System.out.println(AnsiColor.ANSI_YELLOW.code() + "Black: " + blackCapturedPieces + AnsiColor.ANSI_RESET.code());
     }
 
 }
