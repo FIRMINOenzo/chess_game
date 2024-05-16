@@ -19,7 +19,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         ChessMatch chessMatch = new ChessMatch();
 
-        while (true) {
+        while (!chessMatch.getCheckmate()) {
             try {
                 UI.clearScreen();
                 UI.printMatch(chessMatch);
@@ -39,9 +39,10 @@ public class Main {
             } catch (ChessException | UIException exception) {
                 System.out.println(exception.getMessage());
                 scanner.nextLine();
-            } catch (BoardException exception) {
-                System.out.println("wwww");
             }
         }
+
+        UI.clearScreen();
+        UI.printMatch(chessMatch);
     }
 }
