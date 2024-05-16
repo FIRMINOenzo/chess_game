@@ -1,5 +1,6 @@
 package UI;
 
+import UI.enums.AnsiBackgroundColor;
 import UI.enums.AnsiColor;
 import UI.exceptions.UIException;
 import chess.entities.ChessPiece;
@@ -54,6 +55,21 @@ public class UI {
         System.out.println("  a b c d e f g h");
     }
 
+    public static void printChessBoard(ChessPiece[][] chessBoard, boolean[][] possibleMoves) {
+        System.out.println("  a b c d e f g h");
+        for (int i = 0; i < chessBoard.length; i++) {
+            System.out.print((8 - i) + " ");
+
+            for (int j = 0; j < chessBoard[i].length; j++) {
+                printChessPiece(chessBoard[i][j], possibleMoves[i][j]);
+            }
+
+            System.out.print((8 - i) + "\n");
+        }
+
+        System.out.println("  a b c d e f g h");
+    }
+
     private static void printChessPiece(ChessPiece piece) {
         if (piece == null) {
             System.out.print(AnsiColor.ANSI_WHITE.code() + "-" + AnsiColor.ANSI_RESET.code() + " ");
@@ -67,4 +83,23 @@ public class UI {
 
         System.out.print(" ");
     }
+
+    private static void printChessPiece(ChessPiece piece, Boolean background) {
+        if (background) {
+            System.out.print(AnsiBackgroundColor.ANSI_BLUE_BACKGROUND.code());
+        }
+
+        if (piece == null) {
+            System.out.print("-" + AnsiColor.ANSI_RESET.code() + " ");
+            return;
+        }
+
+        switch (piece.getColor()) {
+            case BLACK -> System.out.print(AnsiColor.ANSI_YELLOW.code() + piece + AnsiColor.ANSI_RESET.code());
+            case WHITE -> System.out.print(AnsiColor.ANSI_WHITE.code() + piece + AnsiColor.ANSI_RESET.code());
+        }
+
+        System.out.print(" ");
+    }
+
 }
