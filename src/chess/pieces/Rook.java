@@ -17,7 +17,7 @@ public class Rook extends ChessPiece {
         Position auxiliaryPosition = new Position(0, 0);
 
         // above positions
-        auxiliaryPosition.setValues(position.getRow() - 1, position.getColumn());
+        auxiliaryPosition.setValues(this.position.getRow() - 1, this.position.getColumn());
 
         while (this.getBoard().positionExists(auxiliaryPosition) && !this.getBoard().thereIsAPiece(auxiliaryPosition)) {
             possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
@@ -29,7 +29,7 @@ public class Rook extends ChessPiece {
         }
 
         // left positions
-        auxiliaryPosition.setValues(position.getRow(), position.getColumn() - 1);
+        auxiliaryPosition.setValues(this.position.getRow(), this.position.getColumn() - 1);
 
         while (this.getBoard().positionExists(auxiliaryPosition) && !this.getBoard().thereIsAPiece(auxiliaryPosition)) {
             possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
@@ -41,7 +41,7 @@ public class Rook extends ChessPiece {
         }
 
         // below positions
-        auxiliaryPosition.setValues(position.getRow() + 1, position.getColumn());
+        auxiliaryPosition.setValues(this.position.getRow() + 1, this.position.getColumn());
 
         while (this.getBoard().positionExists(auxiliaryPosition) && !this.getBoard().thereIsAPiece(auxiliaryPosition)) {
             possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
@@ -53,7 +53,7 @@ public class Rook extends ChessPiece {
         }
 
         // right positions
-        auxiliaryPosition.setValues(position.getRow(), position.getColumn() + 1);
+        auxiliaryPosition.setValues(this.position.getRow(), this.position.getColumn() + 1);
 
         while (this.getBoard().positionExists(auxiliaryPosition) && !this.getBoard().thereIsAPiece(auxiliaryPosition)) {
             possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
