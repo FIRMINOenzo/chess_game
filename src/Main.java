@@ -1,13 +1,8 @@
 import UI.UI;
 import UI.exceptions.UIException;
-import board.entities.Board;
-import board.exceptions.BoardException;
 import chess.entities.ChessMatch;
-import chess.entities.ChessPiece;
 import chess.entities.ChessPosition;
-import chess.enums.Color;
 import chess.exceptions.ChessException;
-import chess.pieces.King;
 
 import java.util.Locale;
 import java.util.Scanner;
