@@ -199,7 +199,7 @@ public class ChessMatch {
 
         List<ChessPiece> pieces = this.piecesByColor(color);
 
-        for (ChessPiece piece: pieces) {
+        for (ChessPiece piece : pieces) {
             boolean[][] possibleMoves = piece.possibleMoves();
 
             for (int i = 0; i < possibleMoves.length; i++) {
