@@ -4,6 +4,7 @@ import board.entities.Board;
 import board.entities.Position;
 import chess.entities.ChessPiece;
 import chess.enums.Color;
+import chess.enums.Direction;
 
 public class King extends ChessPiece {
     public King(Board board, Color color) {
@@ -14,54 +15,39 @@ public class King extends ChessPiece {
     public boolean[][] possibleMoves() {
         boolean[][] possibleMoves = new boolean[this.getBoard().getRows()][this.getBoard().getColumns()];
 
+        possibleMoves = this.possibleMovesByDirection(Direction.ABOVE,
+                possibleMoves);
+        possibleMoves = this.possibleMovesByDirection(Direction.BELOW,
+                possibleMoves);
+        possibleMoves = this.possibleMovesByDirection(Direction.LEFT,
+                possibleMoves);
+        possibleMoves = this.possibleMovesByDirection(Direction.RIGHT,
+                possibleMoves);
+        possibleMoves = this.possibleMovesByDirection(Direction.TOP_LEFT,
+                possibleMoves);
+        possibleMoves = this.possibleMovesByDirection(Direction.TOP_RIGHT,
+                possibleMoves);
+        possibleMoves = this.possibleMovesByDirection(Direction.BOTTOM_LEFT,
+                possibleMoves);
+        possibleMoves = this.possibleMovesByDirection(Direction.BOTTOM_RIGHT,
+                possibleMoves);
+
+        return possibleMoves;
+    }
+
+    public boolean[][] possibleMovesByDirection(Direction direction, boolean[][] possibleMoves) {
         Position auxiliaryPosition = new Position(0, 0);
 
-        // above
-        auxiliaryPosition.setValues(this.position.getRow() - 1, this.position.getColumn());
-        if (this.getBoard().positionExists(auxiliaryPosition) && this.canMove(auxiliaryPosition)) {
-            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
-        }
+        auxiliaryPosition.setValues(this.position.getRow() +
+                (direction.getRowChange()),
+                this.position.getColumn() + (direction.getColumnChange()));
 
-        // below
-        auxiliaryPosition.setValues(this.position.getRow() + 1, this.position.getColumn());
-        if (this.getBoard().positionExists(auxiliaryPosition) && this.canMove(auxiliaryPosition)) {
+        if (this.getBoard().positionExists(auxiliaryPosition) &&
+                this.canMove(auxiliaryPosition)) {
             possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
-        }
-
-        // right
-        auxiliaryPosition.setValues(this.position.getRow(), this.position.getColumn() + 1);
-        if (this.getBoard().positionExists(auxiliaryPosition) && this.canMove(auxiliaryPosition)) {
-            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
-        }
-
-        // left
-        auxiliaryPosition.setValues(this.position.getRow(), this.position.getColumn() - 1);
-        if (this.getBoard().positionExists(auxiliaryPosition) && this.canMove(auxiliaryPosition)) {
-            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
-        }
-
-        // nw
-        auxiliaryPosition.setValues(this.position.getRow() - 1, this.position.getColumn() - 1);
-        if (this.getBoard().positionExists(auxiliaryPosition) && this.canMove(auxiliaryPosition)) {
-            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
-        }
-
-        // ne
-        auxiliaryPosition.setValues(this.position.getRow() - 1, this.position.getColumn() + 1);
-        if (this.getBoard().positionExists(auxiliaryPosition) && this.canMove(auxiliaryPosition)) {
-            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
-        }
-
-        // sw
-        auxiliaryPosition.setValues(this.position.getRow() + 1, this.position.getColumn() - 1);
-        if (this.getBoard().positionExists(auxiliaryPosition) && this.canMove(auxiliaryPosition)) {
-            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
-        }
-
-        // se
-        auxiliaryPosition.setValues(this.position.getRow() + 1, this.position.getColumn() + 1);
-        if (this.getBoard().positionExists(auxiliaryPosition) && this.canMove(auxiliaryPosition)) {
-            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
+            auxiliaryPosition.setValues(auxiliaryPosition.getRow() +
+                    (direction.getRowChange()),
+                    auxiliaryPosition.getColumn() + (direction.getColumnChange()));
         }
 
         return possibleMoves;
@@ -71,4 +57,4 @@ public class King extends ChessPiece {
         ChessPiece chessPiece = (ChessPiece) this.getBoard().piece(position);
         return chessPiece == null || chessPiece.getColor() != this.getColor();
     }
-}   
+}

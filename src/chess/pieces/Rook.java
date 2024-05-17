@@ -4,6 +4,7 @@ import board.entities.Board;
 import board.entities.Position;
 import chess.entities.ChessPiece;
 import chess.enums.Color;
+import chess.enums.Direction;
 
 public class Rook extends ChessPiece {
     public Rook(Board board, Color color) {
@@ -14,53 +15,35 @@ public class Rook extends ChessPiece {
     public boolean[][] possibleMoves() {
         boolean[][] possibleMoves = new boolean[this.getBoard().getRows()][this.getBoard().getColumns()];
 
+        possibleMoves = this.possibleMovesByDirection(Direction.ABOVE,
+                possibleMoves);
+        possibleMoves = this.possibleMovesByDirection(Direction.BELOW,
+                possibleMoves);
+        possibleMoves = this.possibleMovesByDirection(Direction.LEFT,
+                possibleMoves);
+        possibleMoves = this.possibleMovesByDirection(Direction.RIGHT,
+                possibleMoves);
+
+        return possibleMoves;
+    }
+
+    public boolean[][] possibleMovesByDirection(Direction direction, boolean[][] possibleMoves) {
         Position auxiliaryPosition = new Position(0, 0);
 
-        // above positions
-        auxiliaryPosition.setValues(this.position.getRow() - 1, this.position.getColumn());
+        auxiliaryPosition.setValues(this.position.getRow() +
+                (direction.getRowChange()),
+                this.position.getColumn() + (direction.getColumnChange()));
 
-        while (this.getBoard().positionExists(auxiliaryPosition) && !this.getBoard().thereIsAPiece(auxiliaryPosition)) {
+        while (this.getBoard().positionExists(auxiliaryPosition) &&
+                !this.getBoard().thereIsAPiece(auxiliaryPosition)) {
             possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
-            auxiliaryPosition.setValues(auxiliaryPosition.getRow() - 1, auxiliaryPosition.getColumn());
+            auxiliaryPosition.setValues(auxiliaryPosition.getRow() +
+                    (direction.getRowChange()),
+                    auxiliaryPosition.getColumn() + (direction.getColumnChange()));
         }
 
-        if (this.getBoard().positionExists(auxiliaryPosition) && this.isThereOpponentPiece(auxiliaryPosition)) {
-            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
-        }
-
-        // left positions
-        auxiliaryPosition.setValues(this.position.getRow(), this.position.getColumn() - 1);
-
-        while (this.getBoard().positionExists(auxiliaryPosition) && !this.getBoard().thereIsAPiece(auxiliaryPosition)) {
-            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
-            auxiliaryPosition.setValues(auxiliaryPosition.getRow(), auxiliaryPosition.getColumn() - 1);
-        }
-
-        if (this.getBoard().positionExists(auxiliaryPosition) && this.isThereOpponentPiece(auxiliaryPosition)) {
-            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
-        }
-
-        // below positions
-        auxiliaryPosition.setValues(this.position.getRow() + 1, this.position.getColumn());
-
-        while (this.getBoard().positionExists(auxiliaryPosition) && !this.getBoard().thereIsAPiece(auxiliaryPosition)) {
-            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
-            auxiliaryPosition.setValues(auxiliaryPosition.getRow() + 1, auxiliaryPosition.getColumn());
-        }
-
-        if (this.getBoard().positionExists(auxiliaryPosition) && this.isThereOpponentPiece(auxiliaryPosition)) {
-            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
-        }
-
-        // right positions
-        auxiliaryPosition.setValues(this.position.getRow(), this.position.getColumn() + 1);
-
-        while (this.getBoard().positionExists(auxiliaryPosition) && !this.getBoard().thereIsAPiece(auxiliaryPosition)) {
-            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
-            auxiliaryPosition.setValues(auxiliaryPosition.getRow(), auxiliaryPosition.getColumn() + 1);
-        }
-
-        if (this.getBoard().positionExists(auxiliaryPosition) && this.isThereOpponentPiece(auxiliaryPosition)) {
+        if (this.getBoard().positionExists(auxiliaryPosition) &&
+                this.isThereOpponentPiece(auxiliaryPosition)) {
             possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
         }
 
