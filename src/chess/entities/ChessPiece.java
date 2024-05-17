@@ -31,6 +31,10 @@ public abstract class ChessPiece extends Piece {
         this.moveCount += 1;
     }
 
+    public void decreaseMoveCount() {
+        this.moveCount -= 1;
+    }
+
     protected boolean isThereOpponentPiece(Position position) {
         ChessPiece chessPiece = (ChessPiece) this.getBoard().piece(position);
 

@@ -5,6 +5,7 @@ import board.entities.Piece;
 import board.entities.Position;
 import chess.enums.Color;
 import chess.exceptions.ChessException;
+import chess.pieces.Bishop;
 import chess.pieces.King;
 import chess.pieces.Rook;
 
@@ -88,8 +89,10 @@ public class ChessMatch {
     }
 
     private Piece performMove(Position source, Position target) {
-        Piece sourcePiece = this.board.removePiece(source);
+        ChessPiece sourcePiece = (ChessPiece) this.board.removePiece(source);
         Piece targetPiece = this.board.removePiece(target);
+
+        sourcePiece.increaseMoveCount();
 
         this.board.placePiece(sourcePiece, target);
 
@@ -102,8 +105,10 @@ public class ChessMatch {
     }
 
     private void undoMove(Position source, Position target, Piece capturedPiece) {
-        Piece sourcePiece = this.board.removePiece(target);
+        ChessPiece sourcePiece = (ChessPiece) this.board.removePiece(target);
         this.board.placePiece(sourcePiece, source);
+
+        sourcePiece.decreaseMoveCount();
 
         if (capturedPiece != null) {
             this.board.placePiece(capturedPiece, target);
