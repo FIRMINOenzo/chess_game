@@ -22,11 +22,19 @@ public class Bishop extends ChessPiece {
             auxiliaryPosition.setValues(auxiliaryPosition.getRow() - 1, auxiliaryPosition.getColumn() - 1);
         }
 
+        if (this.getBoard().positionExists(auxiliaryPosition) && this.isThereOpponentPiece(auxiliaryPosition)) {
+            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
+        }
+
         // ne
         auxiliaryPosition.setValues(this.position.getRow() - 1, this.position.getColumn() + 1);
         while (this.getBoard().positionExists(auxiliaryPosition) && !this.getBoard().thereIsAPiece(auxiliaryPosition)) {
             possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
             auxiliaryPosition.setValues(auxiliaryPosition.getRow() - 1, auxiliaryPosition.getColumn() + 1);
+        }
+
+        if (this.getBoard().positionExists(auxiliaryPosition) && this.isThereOpponentPiece(auxiliaryPosition)) {
+            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
         }
 
         // sw
@@ -36,11 +44,19 @@ public class Bishop extends ChessPiece {
             auxiliaryPosition.setValues(auxiliaryPosition.getRow() + 1, auxiliaryPosition.getColumn() - 1);
         }
 
+        if (this.getBoard().positionExists(auxiliaryPosition) && this.isThereOpponentPiece(auxiliaryPosition)) {
+            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
+        }
+
         // se
         auxiliaryPosition.setValues(this.position.getRow() + 1, this.position.getColumn() + 1);
         while (this.getBoard().positionExists(auxiliaryPosition) && !this.getBoard().thereIsAPiece(auxiliaryPosition)) {
             possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
             auxiliaryPosition.setValues(auxiliaryPosition.getRow() + 1, auxiliaryPosition.getColumn() + 1);
+        }
+
+        if (this.getBoard().positionExists(auxiliaryPosition) && this.isThereOpponentPiece(auxiliaryPosition)) {
+            possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
         }
 
         return possibleMoves;
