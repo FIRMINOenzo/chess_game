@@ -21,7 +21,7 @@ public class Pawn extends ChessPiece {
         return possibleMoves;
     }
 
-    public boolean[][] possibleMovesByDirection(Direction direction, boolean[][] possibleMoves) {
+    private boolean[][] possibleMovesByDirection(Direction direction, boolean[][] possibleMoves) {
         Position auxiliaryPosition = new Position(0, 0);
 
         auxiliaryPosition.setValues(this.position.getRow() + (direction.getRowChange()),
