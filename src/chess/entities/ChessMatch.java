@@ -5,30 +5,27 @@ import board.entities.Piece;
 import board.entities.Position;
 import chess.enums.Color;
 import chess.exceptions.ChessException;
-import chess.pieces.Bishop;
-import chess.pieces.King;
-import chess.pieces.Knight;
-import chess.pieces.Pawn;
-import chess.pieces.Queen;
-import chess.pieces.Rook;
+import chess.pieces.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChessMatch {
+    private final ArrayList<ChessPiece> piecesOnTheBoard = new ArrayList<>();
+    private final ArrayList<ChessPiece> capturedPieces = new ArrayList<>();
+    private final Board board;
+    private Pawn enPassantVulnerable;
     private Integer turn;
     private Color currentPlayer;
     private Boolean check;
     private Boolean checkmate;
-    private final ArrayList<ChessPiece> piecesOnTheBoard = new ArrayList<>();
-    private final ArrayList<ChessPiece> capturedPieces = new ArrayList<>();
-    private final Board board;
 
     public ChessMatch() {
         this.turn = 1;
         this.currentPlayer = Color.WHITE;
         this.check = false;
         this.checkmate = false;
+        // this.enPassantVulnerable = null;
         this.board = new Board(8, 8);
 
         this.initialSetup();
@@ -104,6 +101,15 @@ public class ChessMatch {
             throw new ChessException("[Chess Position error]: You cannot put yourself in check.");
         }
 
+        ChessPiece movedPiece = (ChessPiece) this.board.piece(target);
+
+        this.enPassantVulnerable = null;
+
+        if (movedPiece instanceof Pawn
+                && (target.getRow() == source.getRow() - 2 || target.getRow() == source.getRow() + 2)) {
+            this.enPassantVulnerable = (Pawn) movedPiece;
+        }
+
         this.check = this.testCheck(this.opponent(this.currentPlayer));
         this.checkmate = this.testCheckmate(this.opponent(this.currentPlayer));
 
@@ -147,6 +153,23 @@ public class ChessMatch {
             }
         }
 
+        if (sourcePiece instanceof Pawn) {
+            Integer enPassantRowToCheck = sourcePiece.getColor() == Color.WHITE ? -2 : 2;
+
+            if (target.getRow() == source.getRow() + enPassantRowToCheck) {
+                Pawn pawnSourcePiece = (Pawn) sourcePiece;
+                this.enPassantVulnerable = pawnSourcePiece;
+                pawnSourcePiece.setEnPassantVulnerable(true);
+            } else if (targetPiece == null && target.getColumn() != source.getColumn()) {
+                targetPiece = (Piece) this.board.removePiece(new Position(
+                        this.enPassantVulnerable.getPositionRow(),
+                        this.enPassantVulnerable.getPositionColumn()));
+
+                this.piecesOnTheBoard.remove((ChessPiece) targetPiece);
+                this.capturedPieces.add((ChessPiece) targetPiece);
+            }
+        }
+
         return targetPiece;
     }
 
@@ -178,6 +201,27 @@ public class ChessMatch {
                 rook.decreaseMoveCount();
             }
         }
+
+        if (sourcePiece instanceof Pawn) {
+            if (this.enPassantVulnerable != null && capturedPiece == null &&
+                    target.getColumn() == this.enPassantVulnerable.getPositionColumn()) {
+                System.out.println("Desfeito...");
+                ChessPiece pawn = (ChessPiece) this.board.removePiece(target);
+                Position rigthPawnPosition = new Position(0, 0);
+
+                switch (sourcePiece.getColor()) {
+                    case WHITE -> {
+                        rigthPawnPosition.setValues(3, target.getColumn());
+                    }
+                    case BLACK -> {
+                        rigthPawnPosition.setValues(4, target.getColumn());
+                    }
+                }
+
+                this.board.placePiece(pawn, rigthPawnPosition);
+            }
+        }
+
     }
 
     private void validateSourcePosition(Position position) {

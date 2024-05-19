@@ -7,6 +7,8 @@ import chess.enums.Color;
 import chess.enums.Direction;
 
 public class Pawn extends ChessPiece {
+    private Boolean enPassantVulnerable = false;
+
     public Pawn(Board board, Color color) {
         super(board, color);
     }
@@ -61,5 +63,41 @@ public class Pawn extends ChessPiece {
         if (this.getBoard().positionExists(auxiliaryPosition) && this.isThereOpponentPiece(auxiliaryPosition)) {
             possibleMoves[auxiliaryPosition.getRow()][auxiliaryPosition.getColumn()] = true;
         }
+
+        // Special move -> En Passant
+        this.enPassantChecker(direction, 1, possibleMoves);
+        this.enPassantChecker(direction, -1, possibleMoves);
+    }
+
+    private void enPassantChecker(Direction direction, Integer columnModification, boolean[][] possibleMoves) {
+        Position auxiliaryPosition = new Position(0, 0);
+
+        auxiliaryPosition.setValues(this.position.getRow(),
+                this.position.getColumn() + columnModification);
+        if (this.getBoard().positionExists(auxiliaryPosition) && this.isThereOpponentPiece(auxiliaryPosition)
+                && this.getBoard().piece(auxiliaryPosition) instanceof Pawn) {
+            Pawn pawnOnPosition = (Pawn) this.getBoard().piece(auxiliaryPosition);
+
+            if (pawnOnPosition.enPassantVulnerable) {
+                possibleMoves[this.position.getRow() + direction.getRowChange()][this.position.getColumn()
+                        + columnModification] = true;
+            }
+        }
+    }
+
+    public Boolean getEnPassantVulnerable() {
+        return this.enPassantVulnerable;
+    }
+
+    public void setEnPassantVulnerable(Boolean vulnerable) {
+        this.enPassantVulnerable = vulnerable;
+    }
+
+    public Integer getPositionRow() {
+        return this.position.getRow();
+    }
+
+    public Integer getPositionColumn() {
+        return this.position.getColumn();
     }
 }
