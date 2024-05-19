@@ -109,6 +109,9 @@ public class ChessMatch {
             throw new ChessException("[Chess Position error]: You cannot put yourself in check.");
         }
 
+        if (this.enPassantVulnerable != null)
+            this.enPassantVulnerable.setEnPassantVulnerable(false);
+
         this.enPassantVulnerable = null;
 
         if (movedPiece instanceof Pawn
