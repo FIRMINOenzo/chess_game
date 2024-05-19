@@ -31,6 +31,12 @@ public class Main {
                 ChessPosition targetPosition = UI.readChessPosition(scanner);
 
                 chessMatch.performChessMove(sourcePosition, targetPosition);
+
+                if (chessMatch.getPromoted() != null) {
+                    System.out.print("Choose the piece for promotion [R | N | B | Q]: ");
+                    String pieceChoose = scanner.nextLine();
+                    chessMatch.replacePromotedPiece(pieceChoose);
+                }
             } catch (ChessException | UIException exception) {
                 System.out.println(exception.getMessage());
                 scanner.nextLine();

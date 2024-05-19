@@ -15,6 +15,7 @@ public class ChessMatch {
     private final ArrayList<ChessPiece> capturedPieces = new ArrayList<>();
     private final Board board;
     private Pawn enPassantVulnerable;
+    private ChessPiece promoted;
     private Integer turn;
     private Color currentPlayer;
     private Boolean check;
@@ -25,7 +26,7 @@ public class ChessMatch {
         this.currentPlayer = Color.WHITE;
         this.check = false;
         this.checkmate = false;
-        // this.enPassantVulnerable = null;
+        this.enPassantVulnerable = null;
         this.board = new Board(8, 8);
 
         this.initialSetup();
@@ -95,13 +96,18 @@ public class ChessMatch {
         this.validateTargetPosition(source, target);
 
         ChessPiece capturedPiece = (ChessPiece) this.performMove(source, target);
+        ChessPiece movedPiece = (ChessPiece) this.board.piece(target);
+
+        this.promoted = null;
+        Integer boardEndIndex = movedPiece.getColor() == Color.WHITE ? 0 : 7;
+        if (movedPiece instanceof Pawn && target.getRow() == boardEndIndex) {
+            this.promoted = movedPiece;
+        }
 
         if (this.testCheck(this.currentPlayer)) {
             this.undoMove(source, target, capturedPiece);
             throw new ChessException("[Chess Position error]: You cannot put yourself in check.");
         }
-
-        ChessPiece movedPiece = (ChessPiece) this.board.piece(target);
 
         this.enPassantVulnerable = null;
 
@@ -122,6 +128,50 @@ public class ChessMatch {
         Position position = chessPosition.toPosition();
         this.validateSourcePosition(position);
         return this.board.piece(position).possibleMoves();
+    }
+
+    public ChessPiece replacePromotedPiece(String classFirstLetter) {
+        if (this.promoted == null)
+            throw new ChessException("There is no piece to be promoted.");
+
+        if (!classFirstLetter.equals("R") &&
+                !classFirstLetter.equals("N") &&
+                !classFirstLetter.equals("B") &&
+                !classFirstLetter.equals("Q")) {
+            throw new ChessException("Invalid type selected for promotion.");
+        }
+
+        Position promotedPosition = this.promoted.getChessPosition().toPosition();
+        Piece removedPawn = board.removePiece(promotedPosition);
+        this.piecesOnTheBoard.remove(removedPawn);
+
+        ChessPiece newPromotedPiece = this.createChessPieceByInicial(classFirstLetter, promoted.getColor());
+        this.board.placePiece(newPromotedPiece, promotedPosition);
+        this.piecesOnTheBoard.add(newPromotedPiece);
+        this.promoted = newPromotedPiece;
+
+        return newPromotedPiece;
+    }
+
+    private ChessPiece createChessPieceByInicial(String inicial, Color color) {
+        ChessPiece createdPiece = null;
+
+        switch (inicial) {
+            case "R" -> {
+                createdPiece = new Rook(this.board, color);
+            }
+            case "N" -> {
+                createdPiece = new Knight(this.board, color);
+            }
+            case "B" -> {
+                createdPiece = new Bishop(this.board, color);
+            }
+            default -> {
+                createdPiece = new Queen(this.board, color);
+            }
+        }
+
+        return createdPiece;
     }
 
     private Piece performMove(Position source, Position target) {
@@ -330,5 +380,9 @@ public class ChessMatch {
 
     public Boolean getCheckmate() {
         return this.checkmate;
+    }
+
+    public ChessPiece getPromoted() {
+        return this.promoted;
     }
 }
