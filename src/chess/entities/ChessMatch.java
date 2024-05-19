@@ -135,13 +135,13 @@ public class ChessMatch {
 
     public ChessPiece replacePromotedPiece(String classFirstLetter) {
         if (this.promoted == null)
-            throw new ChessException("There is no piece to be promoted.");
+            throw new ChessException("[Promotion error]: There is no piece to be promoted.");
 
         if (!classFirstLetter.equals("R") &&
                 !classFirstLetter.equals("N") &&
                 !classFirstLetter.equals("B") &&
                 !classFirstLetter.equals("Q")) {
-            throw new ChessException("Invalid type selected for promotion.");
+            throw new ChessException("[Promotion error]: Invalid type selected for promotion.");
         }
 
         Position promotedPosition = this.promoted.getChessPosition().toPosition();

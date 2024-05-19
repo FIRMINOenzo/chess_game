@@ -33,9 +33,17 @@ public class Main {
                 chessMatch.performChessMove(sourcePosition, targetPosition);
 
                 if (chessMatch.getPromoted() != null) {
-                    System.out.print("Choose the piece for promotion [R | N | B | Q]: ");
-                    String pieceChoose = scanner.nextLine();
-                    chessMatch.replacePromotedPiece(pieceChoose);
+                    while (true) {
+                        try {
+                            System.out.print("Choose the piece for promotion [R | N | B | Q]: ");
+                            String pieceChoose = scanner.nextLine().trim().toUpperCase();
+                            chessMatch.replacePromotedPiece(pieceChoose);
+                            break;
+                        } catch (ChessException exception) {
+                            System.out.println(exception.getMessage());
+                            scanner.nextLine();
+                        }
+                    }
                 }
             } catch (ChessException | UIException exception) {
                 System.out.println(exception.getMessage());
