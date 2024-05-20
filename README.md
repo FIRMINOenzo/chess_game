@@ -37,7 +37,7 @@ cd chess_game
 javac -cp src src/Main.java -d out && java -cp ./out Main
 ```
 
-If everything runs right, you should see something like this
+If everything runs right, you should see something like this (With color on your terminal):
 
 ```
    a b c d e f g h
