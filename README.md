@@ -3,7 +3,8 @@
 <p align="center">
   <a href="#tech">Technologies</a> • 
   <a href="#playing">Playing the game</a> • 
-  <a href="#info">Pieces information</a>
+  <a href="#info">Pieces information</a> • 
+  <a href="#build">How was it build</a>
 </p>
 
 <p align="center">
@@ -20,8 +21,8 @@ Learn how to run it on your machine.
 
 <h3>Prerequisites</h3>
 
-- [Git](https://github.com/)
-- [Java LTS (21.0.3)](https://github.com)
+- [Git](https://git-scm.com/downloads)
+- [Java LTS (21.0.3)](https://www.oracle.com/br/java/technologies/downloads/#java21)
 
 <h3>Cloning</h3>
 
@@ -64,13 +65,40 @@ Source position:
 
 <h2 id="info">♟ Pieces information</h2>
 
-Here you can list the main routes of your API, and what are their expected request bodies.
-​
-| Acronym | Piece description                                          
-|----------------------|-----------------------------------------------------
-| R | Rook ♜
-| N | Knight ♞
-| B | Bishop ♝
-| Q | Queen ♛
-| K | King ♚
-| P | Pawn ♟
+| Acronym | Piece description |
+|---------|-------------------|
+| R       | Rook ♜            |
+| N       | Knight ♞          |
+| B       | Bishop ♝          |
+| Q       | Queen ♛           |
+| K       | King ♚            |
+| P       | Pawn ♟            |
+
+<h2 id="build">🔨 How it was build</h2>
+
+The project is developed using only pure Java.
+Perhaps, that is what made it so enjoyable to develop.
+The project is based on Object-Oriented Programming (OOP) principles.
+These principles allowed me to develop it cleanly and concisely.
+
+<h3>Some of OOP concepts used:</h3>
+
+- Encapsulation
+- Methods override
+- Access modifiers
+- Inheritance
+- Upcasting
+- Downcasting
+- Static methods
+- Polymorphism
+- Abstract class & method
+- Overloading
+
+<h3>Others concepts:</h3>
+
+Besides OOP, was used in this project too:
+
+- Matrix manipulation
+- Layers patterns
+- Custom exceptions
+- Enumerations
